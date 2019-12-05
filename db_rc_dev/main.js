@@ -17,8 +17,10 @@ var fs = require('fs');
 
 
 
-
-
+function getPong(max) {
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max + 1)); //The maximum is inclusive and the minimum is inclusive 
+}
 
 
 
@@ -38,26 +40,23 @@ bot.on('error', function(err){
 });
 
 
-// const START_DATE = '2018-08-04'; // Date used as the starting point for multi-hour intervals, must be YYYY-MM-DD format
-// const START_HOUR = 10; // Hour of the day when the timer begins (0 is 12am, 23 is 11pm), used with START_DATE and INTERVAL_HOURS param
-// const INTERVAL_HOURS = 1; // Trigger at an interval of every X hours
-// const TARGET_MINUTE = 0; // Minute of the hour when the chest will refresh, 30 means 1:30, 2:30, etc.
-// const OFFSET = 10; // Notification will warn that the target is X minutes away
 
-const NORTH_DAY = 3; // 3 is weds my dudes
-const SOUTH_DAY = 0;
-const SEND_HOUR = 8; // PST
-const SEND_MINUTE = 1; // +9 offset, this number should be 9 larger than desired
-// 8,1 became 9:52am
+const announceList = [
+	{day:3, hour:8, minute:9, role_id:"<@&576081452211372062>", 
+		day_word:"Wednesday", meet:"GameKastle at 6:30pm!",remind:false},
+	{day:0, hour:8, minute:9, role_id:"<@&651108830956224515>", 
+		day_word:"Sunday", meet:"Tribe at 11:30am!",remind:false},
+	{day:6, hour:18, minute:9, role_id:"<@&651108830956224515>", 
+		day_word:"Sunday", meet:"Tribe at 11:30am!",remind:true},
+];
 
-const NORTH_ROLE_ID = "<@&576081452211372062>";
-const SOUTH_ROLE_ID = "<@&651108830956224515>";
+const pingList = ["pong","pong","pong","pong","pong","pong","pong","pong","pong","pong","pong","pong",
+			"pong","pong","pong","pong","pong","pong","pong","pong","pong","pong","pong","pong",
+			"stahp","i got u","wat","wat do", "cash me ousside","no plz no","ooo-wee","oof","big mood",
+			"im here", "relax bruh", "chill dawg", "naw, that aint me", "raspberry sherbert","get rekt skrub",
+			"roundtrip 24.7ms\n...lol not really", "🇾", "💖💞💝", "㊙️","🍆🍑💦"];
 
-const NORTH_DAY_WORD = "Wednesday";
-const SOUTH_DAY_WORD = "Sunday";
 
-const NORTH_MEET = "GameKastle at 630!";
-const SOUTH_MEET = "Tribe at 1130!";
 
 var announce = "\n Lemme know below if you can make it!";
 	announce += "\n";
@@ -67,32 +66,12 @@ var announce = "\n Lemme know below if you can make it!";
 	announce += "\n";
 	announce += "\n We will see you at ";
 
-// Don't change any code below
-// const NOTIFY_MINUTE = (TARGET_MINUTE < OFFSET ? 60 : 0) + TARGET_MINUTE - OFFSET;
-// const START_TIME = new Date(new Date(START_DATE).getTime() + new Date().getTimezoneOffset() * 60000 + START_HOUR * 3600000).getTime();
-// var emoji = bot.emojis.find(emoji => emoji.name == "heart");
-
-// console.log("DEBUG: find:" + bot.emojis.find(emoji => emoji.name.includes("h") ));
-
-// var emoji = bot.emojis;
-
-// for (var [key, value] of emoji.entries()) {
-// 	console.log("DEBUG: emoji ALL:"+key+"|"+value);
-
-// }
-
-// var newThing = emoji.array();
-// console.log("DEBUG: newThing: ${newThing}");
-
-// for (var i in newThing) {
-// 	console.log("DEBUG: emoji ALL:"+i);
-
-// }
+var reminder = "\n The #roll_call will post later,";
+	reminder += "\n just a heads up to let you know this is coming!";
+	reminder += "\n";
+	reminder += "\n We will see you at ";
 
 
-
-// console.log("DEBUG: emoji:"+emoji.values());
-// console.log("DEBUG: emoji:"+emoji);
 
 setInterval(function() {
     var d = new Date();
@@ -100,44 +79,31 @@ setInterval(function() {
     // 							+", Hour is:"+d.getHours()
     // 							+" Minute is:"+d.getMinutes());
 
-    if(NORTH_DAY == d.getDay() 
-	    	&& SEND_HOUR == d.getHours()
-	    	&& SEND_MINUTE == d.getMinutes()){
-	    	// ){
+    for (const item of announceList) {
+	  // console.log(item);
+	  if(item.day == d.getDay() 
+		    	&& item.hour == d.getHours()
+		    	&& item.minute == d.getMinutes()){
+		    	// ){
 
-    	var msg = " **It is "+NORTH_DAY_WORD+" my dudes!!**";
-    	
-    	NOTIFY_CHANNEL.send(NORTH_ROLE_ID + msg + announce + NORTH_MEET)
-    		.then(message => {
-    			message.react('🇾')
-					.then(() => message.react('❔'))
-					.then(() => message.react('🇳'))
-					.catch(() => console.error('One of the emojis failed to react.'));
-    		});
+		    if(item.remind){
+		    	var msg = " **"+item.day_word+" is coming, my dudes!!**";
+		    	NOTIFY_CHANNEL.send(item.role_id + msg + reminder + item.meet);
+		    }else{
+		    	var msg = " **It is "+item.day_word+" my dudes!!**";
+		    	NOTIFY_CHANNEL.send(item.role_id + msg + announce + item.meet)
+		    		.then(message => {
+		    			message.react('🇾')
+							.then(() => message.react('❔'))
+							.then(() => message.react('🇳'))
+							.catch(() => console.error('One of the emojis failed to react.'));
+		    	});
+		    }
 
-    }
+	    }
+	} 
 
-    if(SOUTH_DAY == d.getDay() 
-	    	&& SEND_HOUR == d.getHours()
-	    	&& SEND_MINUTE == d.getMinutes()){
-	    	// ){
-
-    	var msg = " **It is "+SOUTH_DAY_WORD+" my dudes!!**";
-    	
-    	NOTIFY_CHANNEL.send(SOUTH_ROLE_ID + msg + announce + SOUTH_MEET)
-    		.then(message => {
-    			message.react('🇾')
-					.then(() => message.react('❔'))
-					.then(() => message.react('🇳'))
-					.catch(() => console.error('One of the emojis failed to react.'));
-    		});
-
-    }
-
-    // if(Math.floor((d.getTime() - START_TIME) / 3600000) % INTERVAL_HOURS > 0) return; // Return if hour is not the correct interval
-    // if(d.getMinutes() !== NOTIFY_MINUTE) return; // Return if current minute is not the notify minute
-    // console.log('The chests refresh in ' + OFFSET + ' minutes!');
-    // NOTIFY_CHANNEL.sendMessage('The chests refresh in ' + OFFSET + ' minutes!');
+   
 }, 60 * 1000); // Check every minute
 
 
@@ -152,17 +118,12 @@ bot.on('message', message => {
     is_admin =  message.member.hasPermission("ADMINISTRATOR");
   }
 
- //  if(json_refresh){
- //  	json_refresh = false;
 
- //  	redirector.json_refresher();
- //  	autorespond.json_refresher();
- //  	setTimeout(function(){json_refresh=true}, 0.1 * 60 * 1000);
- //  }
 
   if (message.content.toLowerCase() === 'ping') {
     // send "pong" to the same channel.
-    message.channel.send('pong');
+    var msg = pingList[getPong(pingList.length-1)];
+    message.channel.send(msg);
   }
   if (message.content.toLowerCase() === 'reactt') {
     // send "pong" to the same channel.
@@ -181,25 +142,6 @@ bot.on('message', message => {
     message.channel.send("Channel ID:"+chan);
   }
 
-
- //  if(is_admin && message.content.toLowerCase().includes("show timestamps")){
- //  	var ts_string = user_active.show_all_stamps()
-	// 	message.channel.send("timestamps:\n"+ts_string);
- //  }
-
- //  if(message.content.toLowerCase().includes("!cookies")){
- //  	var retval = cookie.give_cookie(message,"!cookies");
- //  	message.channel.send(retval);
- //  }
- //  else if(message.content.toLowerCase().includes("!cookie")){
- //  	var retval = cookie.give_cookie(message,"!cookie");
- //  	message.channel.send(retval);
- //  }
-	
- //  if(!message.author.bot && message.content.toLowerCase().includes("!calendar")){
- //  	calendar.process_calendar(message,"!calendar");
-
- //  }
 	
   if(message.content.toLowerCase().includes("!setup_rc") && !message.author.bot){
   // if(message.content.toLowerCase().includes("!cookie")){
@@ -208,43 +150,9 @@ bot.on('message', message => {
   	message.channel.send(retval);
   }
 
- //  if(message.content.toLowerCase().includes("!topic")){
- //    var topic = message.channel.topic;
- //    var chan_name = message.channel.name;
- //    console.log("topic:"+topic);
- //    message.channel.send("#"+chan_name+":\n"+topic);
- //  }
-
-
-
-	// redirector.check_and_respond(message);
-	// autorespond.check_and_respond(message);
-	// moodtrack.check_and_store(message);
-	// linksave.check_and_respond(message);
 
 });
 
-// bot.on('guildMemberRemove', member => {
-  
-//   console.log('guildMemberRemove ' + member + " aka " +  member.user.username );
-//   var user = "<@149628603632451584>";
-//   // me <@149628603632451584>
-//   // loki actual "<@246743107855581185>"
-//   // var loki = member.client.users.find("<@149628603632451584>") 
-//   var test = member.guild.owner; 
-//   // console.log("test user left "+loki);
-//   // console.log("test user left "+member.client.fetchUser(user).username );
-  
-//   test.sendMessage('test user left: '+ member + " aka " +  member.user.username )
-//     .then(message => console.log(`Sent message: ${message.content}`))
-//     .catch(console.error);
-//     // for(var key in users) {
-//     //   if(users.hasOwnProperty(key)) {
-//     //       console.log("showing: "+users[key]);
-//     //   }
-//     // }
-//   // loki.sendMessage("test user left "+loki);
-// });
 
 
 
