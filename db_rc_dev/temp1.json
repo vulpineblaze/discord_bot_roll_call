@@ -1,0 +1,51 @@
+[
+	{"name":"fire", "wt":10, "emoji":"⬜", "type":"element"},
+	{"name":"water", "wt":10, "emoji":"⬜", "type":"element"},
+	{"name":"air", "wt":10, "emoji":"⬜", "type":"element"},
+	{"name":"earth", "wt":10, "emoji":"⬜", "type":"element"},
+	{"name":"life", "wt":10, "emoji":"⬜", "type":"element"},
+	{"name":"corruption", "wt":10, "emoji":"⬜", "type":"element"},
+	{"name":"crystal", "wt":10, "emoji":"⬜", "type":"element"},
+	{"name":"void", "wt":10, "emoji":"⬜", "type":"element"},
+	{"name":"lightning", "wt":10, "emoji":"⬜", "type":"element"},
+	{"name":"slapjack", "wt":10, "emoji":"⬜", "type":"character"},
+	{"name":"kinder", "wt":10, "emoji":"⬜", "type":"character"},
+	{"name":"sirona", "wt":10, "emoji":"⬜", "type":"character"},
+	{"name":"selena", "wt":10, "emoji":"⬜", "type":"character"},
+	{"name":"cha53", "wt":10, "emoji":"⬜", "type":"character"},
+	{"name":"gerases", "wt":10, "emoji":"⬜", "type":"character"},
+	{"name":"d'hang", "wt":10, "emoji":"⬜", "type":"character"},
+	{"name":"bp", "wt":10, "emoji":"⬜", "type":"character"},
+	{"name":"lep", "wt":10, "emoji":"⬜", "type":"character"},
+	{"name":"astryl", "wt":10, "emoji":"⬜", "type":"core_concept"},
+	{"name":"dyr", "wt":10, "emoji":"⬜", "type":"core_concept"},
+	{"name":"more_stuff", "wt":10, "emoji":"⬜", "type":"core_concept"},
+	{"name":"more_stuff", "wt":10, "emoji":"⬜", "type":"core_concept"},
+	{"name":"more_stuff", "wt":10, "emoji":"⬜", "type":"core_concept"},
+	{"name":"more_stuff", "wt":10, "emoji":"⬜", "type":"core_concept"},
+	{"name":"more_stuff", "wt":10, "emoji":"⬜", "type":"core_concept"},
+	{"name":"more_stuff", "wt":10, "emoji":"⬜", "type":"core_concept"},
+	{"name":"more_stuff", "wt":10, "emoji":"⬜", "type":"core_concept"},
+	{"name":"more_stuff", "wt":10, "emoji":"⬜", "type":"core_concept"},
+	{"name":"more_stuff", "wt":10, "emoji":"⬜", "type":"core_concept"},
+	{"name":"more_stuff", "wt":10, "emoji":"⬜", "type":"core_concept"},
+	{"name":"more_stuff", "wt":10, "emoji":"⬜", "type":"core_concept"},
+	{"name":"more_stuff", "wt":10, "emoji":"⬜", "type":"core_concept"},
+	{"name":"more_stuff", "wt":10, "emoji":"⬜", "type":"core_concept"},
+	{"name":"more_stuff", "wt":10, "emoji":"⬜", "type":"core_concept"},
+	{"name":"more_stuff", "wt":10, "emoji":"⬜", "type":"core_concept"},
+]
+
+//  elements
+
+//  characters
+
+//  core concepts (astrylite, dyr, etc..)
+
+//  
+
+
+
+
+
+
