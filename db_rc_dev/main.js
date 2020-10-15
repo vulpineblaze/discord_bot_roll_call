@@ -23,15 +23,41 @@ function getPong(max) {
 }
 
 
-
+function sendRollCall(item){
+  if(item.remind){
+    var msg = " **"+item.day_word+" is coming, my dudes!!**";
+    try{
+        NOTIFY_CHANNEL.send(item.role_id + msg + reminder + item.meet);
+    }catch(err){
+        console.log(err.message);
+    }
+  }else{
+    var msg = " **It is "+item.day_word+" my dudes!!**";
+    try{
+        NOTIFY_CHANNEL.send(item.role_id + msg + announce + item.meet)
+          .then(message => {
+            message.react('🇾')
+            .then(() => message.react('❔'))
+            .then(() => message.react('🇳'))
+            .catch(() => console.error('One of the emojis failed to react.'));
+        });
+    }catch(err){
+        console.log(err.message);
+    }
+    
+  }
+}
 
 // the ready event is vital, it means that your bot will only start reacting to information
 // from Discord _after_ ready is emitted.
 var NOTIFY_CHANNEL;
 bot.on('ready', () => {
   console.log('I am ready!');
-  NOTIFY_CHANNEL = bot.channels.fetch('563397845432926238'); // Channel to send notification
-  // NOTIFY_CHANNEL = bot.channels.find('id', '580062237662642186'); // DEBUG
+  // NOTIFY_CHANNEL = bot.channels.fetch('563397845432926238'); // Channel to send notification
+  // NOTIFY_CHANNEL = bot.channels.find('id', '580062237662642186'); // DEBUG //563397845432926238
+  bot.channels.fetch('563397845432926238')
+    .then(channel => NOTIFY_CHANNEL = channel)
+    .catch(console.error);
 
 });
 bot.on('error', function(err){
@@ -42,8 +68,8 @@ bot.on('error', function(err){
 
 
 const announceList = [
-	{day:3, hour:8, minute:9, role_id:"<@&576081452211372062>", 
-		day_word:"Wednesday", meet:"(*Online*) at 6:30pm!",remind:false}
+	{day:2, hour:15, minute:5, role_id:"<@&576081452211372062>", 
+		day_word:"Tuesday", meet:"(*Online*) at 6:30pm!",remind:false}
 ];
 
 // {day:0, hour:8, minute:9, role_id:"<@&651108830956224515>", 
@@ -87,19 +113,7 @@ setInterval(function() {
 		    	&& item.minute == d.getMinutes()){
 		    	// ){
 
-		    if(item.remind){
-		    	var msg = " **"+item.day_word+" is coming, my dudes!!**";
-		    	NOTIFY_CHANNEL.send(item.role_id + msg + reminder + item.meet);
-		    }else{
-		    	var msg = " **It is "+item.day_word+" my dudes!!**";
-		    	NOTIFY_CHANNEL.send(item.role_id + msg + announce + item.meet)
-		    		.then(message => {
-		    			message.react('🇾')
-							.then(() => message.react('❔'))
-							.then(() => message.react('🇳'))
-							.catch(() => console.error('One of the emojis failed to react.'));
-		    	});
-		    }
+		    sendRollCall(item);
 
 	    }
 	} 
@@ -143,8 +157,22 @@ bot.on('message', message => {
     var chan = message.channel.id;
     message.channel.send("Channel ID:"+chan);
   }
+  if (is_admin && msgLC === 'need_datetime') {
+    var d = new Date();
+    var outStr = "DEBUG: Day is:"+d.getDay()
+                  +", Hour is:"+d.getHours()
+                  +" Minute is:"+d.getMinutes();
+    message.channel.send("Datetime is: "+outStr);
+  }
+  if (is_admin && msgLC === 'send_north') {
+    sendRollCall({role_id:"<@&576081452211372062>", 
+      day_word:"Wednesday", meet:"(*Online*) at 6:30pm!",remind:false});
+    message.delete();
+  }
 
-	
+
+
+
   if(msgLC.includes("!setup_rc") && !message.author.bot){
   // if(message.content.toLowerCase().includes("!cookie")){
   	console.log(message.text);
